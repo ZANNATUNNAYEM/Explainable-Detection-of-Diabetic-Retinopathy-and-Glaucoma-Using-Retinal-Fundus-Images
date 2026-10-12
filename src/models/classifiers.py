@@ -69,3 +69,64 @@ class RetinalEnsembleModel(nn.Module):
         # Convert back to pseudo-logits for compatibility with standard loss/eval pipelines
         log_prob = torch.log(torch.clamp(fused_prob, min=1e-7))
         return log_prob
+
+
+class MultiTaskRetinalClassifier(nn.Module):
+    """
+    Multi-task deep classifier that simultaneously predicts:
+    1. 5-class DR severity grading (0: No DR -> 4: Proliferative)
+    2. Binary Referable DR screening (0: Non-referable, 1: Referable)
+    Sharing feature representations regularizes training and surpasses single-task baselines.
+    """
+    def __init__(self, architecture="densenet121", pretrained=True, dropout=0.3):
+        super().__init__()
+        arch = architecture.lower().replace("-", "_")
+        self.architecture = arch
+
+        if "densenet121" in arch:
+            weights = models.DenseNet121_Weights.DEFAULT if pretrained else None
+            base = models.densenet121(weights=weights)
+            self.features = base.features
+            num_features = base.classifier.in_features
+            self.pooling = nn.AdaptiveAvgPool2d((1, 1))
+        elif "efficientnet" in arch:
+            weights = models.EfficientNet_B0_Weights.DEFAULT if pretrained else None
+            base = models.efficientnet_b0(weights=weights)
+            self.features = base.features
+            num_features = base.classifier[1].in_features
+            self.pooling = nn.AdaptiveAvgPool2d((1, 1))
+        else:
+            raise ValueError(f"Unsupported architecture: {architecture}")
+
+        self.shared_fc = nn.Sequential(
+            nn.Dropout(p=dropout),
+            nn.Linear(num_features, 256),
+            nn.ReLU(inplace=True),
+        )
+
+        # Multi-class 5-grade head
+        self.grade_head = nn.Sequential(
+            nn.Dropout(p=dropout / 2.0),
+            nn.Linear(256, 5)
+        )
+
+        # Binary referable DR head
+        self.referable_head = nn.Sequential(
+            nn.Dropout(p=dropout / 2.0),
+            nn.Linear(256, 2)
+        )
+
+    def forward(self, x):
+        feat = self.features(x)
+        feat = self.pooling(feat)
+        feat = torch.flatten(feat, 1)
+        shared = self.shared_fc(feat)
+
+        grade_logits = self.grade_head(shared)
+        referable_logits = self.referable_head(shared)
+
+        return {
+            "grade_logits": grade_logits,
+            "referable_logits": referable_logits,
+        }
+
