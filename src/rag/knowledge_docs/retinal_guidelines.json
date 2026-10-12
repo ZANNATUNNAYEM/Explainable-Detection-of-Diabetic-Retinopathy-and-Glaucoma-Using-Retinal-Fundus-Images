@@ -1,0 +1,58 @@
+[
+  {
+    "id": "DR_GRADE_0",
+    "disease": "Diabetic Retinopathy",
+    "grade": "No DR (Grade 0)",
+    "criteria": "No visible diabetic retinal abnormalities; absence of microaneurysms, hemorrhages, hard exudates, or cotton wool spots.",
+    "clinical_management": "Annual dilated fundus screening recommended. Maintain optimal glycemic and blood pressure control.",
+    "references": "International Council of Ophthalmology (ICO) Guidelines for Diabetic Eye Care."
+  },
+  {
+    "id": "DR_GRADE_1",
+    "disease": "Diabetic Retinopathy",
+    "grade": "Mild NPDR (Grade 1)",
+    "criteria": "Presence of microaneurysms only. No visible retinal hemorrhages, hard exudates, or venous beading.",
+    "clinical_management": "Follow-up comprehensive eye examination in 6-12 months. Reinforce glycemic, lipid, and blood pressure control.",
+    "references": "American Academy of Ophthalmology (AAO) Preferred Practice Pattern - Diabetic Retinopathy."
+  },
+  {
+    "id": "DR_GRADE_2",
+    "disease": "Diabetic Retinopathy",
+    "grade": "Moderate NPDR (Grade 2)",
+    "criteria": "More than just microaneurysms, but less than Severe NPDR. Includes dot-and-blot hemorrhages, hard exudates, and cotton wool spots.",
+    "clinical_management": "Referral to ophthalmologist. Re-evaluation every 3-6 months. Evaluate for macular edema with OCT if foveal involvement suspected.",
+    "references": "Early Treatment Diabetic Retinopathy Study (ETDRS) Report No. 10."
+  },
+  {
+    "id": "DR_GRADE_3",
+    "disease": "Diabetic Retinopathy",
+    "grade": "Severe NPDR (Grade 3)",
+    "criteria": "Meets 4-2-1 rule: severe intraretinal hemorrhages in all 4 quadrants, venous beading in >=2 quadrants, or prominent IRMA in >=1 quadrant.",
+    "clinical_management": "Urgent retinal specialist referral (within 2-4 weeks). High risk of progression to PDR. Consider panretinal photocoagulation (PRP) or anti-VEGF therapy.",
+    "references": "ETDRS 4-2-1 Rule Guidelines; AAO Preferred Practice Pattern."
+  },
+  {
+    "id": "DR_GRADE_4",
+    "disease": "Diabetic Retinopathy",
+    "grade": "Proliferative DR (Grade 4)",
+    "criteria": "Neovascularization of the disc (NVD), neovascularization elsewhere (NVE), pre-retinal or vitreous hemorrhage, or fibrovascular proliferation.",
+    "clinical_management": "Immediate ophthalmic intervention required (within 24-48 hours to 1 week). Panretinal photocoagulation (PRP), anti-VEGF intravitreal injections, or vitrectomy for non-clearing vitreous hemorrhage.",
+    "references": "Diabetic Retinopathy Study (DRS) & AAO Preferred Practice Pattern."
+  },
+  {
+    "id": "GLAUCOMA_SUSPECT",
+    "disease": "Glaucoma",
+    "grade": "Glaucoma / Glaucoma Suspect",
+    "criteria": "Increased vertical cup-to-disc ratio (VCDR > 0.65), neuroretinal rim thinning (notably inferior and superior rims violating ISNT rule), disc hemorrhages, or retinal nerve fiber layer (RNFL) defects.",
+    "clinical_management": "Comprehensive glaucoma workup including Goldmann applanation tonometry, gonioscopy, standard automated perimetry (visual field test), and spectral-domain OCT of the optic nerve head. Initiate IOP-lowering topical drops if confirmed.",
+    "references": "European Glaucoma Society (EGS) Guidelines (5th Edition); AAO Primary Open-Angle Glaucoma PPP."
+  },
+  {
+    "id": "NON_GLAUCOMA",
+    "disease": "Glaucoma",
+    "grade": "Non-Glaucomatous Retinal Fundus",
+    "criteria": "Healthy optic nerve head with intact, symmetric neuroretinal rim obeying the ISNT rule; VCDR <= 0.5 without notch, excavation, or disc hemorrhage.",
+    "clinical_management": "Routine age-appropriate ophthalmic screening every 2 years. Monitor if high myopia or family history present.",
+    "references": "AAO Primary Open-Angle Glaucoma Guidelines."
+  }
+]

@@ -1,0 +1,69 @@
+project:
+  name: "Explainable-Detection-of-Diabetic-Retinopathy-and-Glaucoma-Using-Retinal-Fundus-Images"
+  version: "1.0.0"
+  seed: 42
+
+data:
+  eyepacs:
+    hf_dataset_id: "CDHAI/EyePACS"
+    image_size: 224
+    num_classes: 5
+    class_names: ["No DR", "Mild", "Moderate", "Severe", "Proliferative DR"]
+    binary_mapping:
+      referable_threshold: 2  # Grade >= 2 is referable DR
+  refuge2:
+    data_dir: "data/refuge2"
+    num_classes: 2
+    class_names: ["Non-Glaucoma", "Glaucoma"]
+  preprocessing:
+    clahe_clip_limit: 2.0
+    clahe_tile_grid_size: [8, 8]
+    normalize_mean: [0.485, 0.456, 0.406]
+    normalize_std: [0.229, 0.224, 0.225]
+
+models:
+  backbones:
+    - "densenet121"
+    - "efficientnet_b0"
+  ensemble_weights: [0.5, 0.5]
+  pretrained: true
+  dropout: 0.3
+
+training:
+  batch_size: 16
+  num_workers: 2
+  learning_rate: 1.0e-4
+  min_lr: 1.0e-6
+  weight_decay: 1.0e-4
+  epochs: 15
+  loss_type: "focal"  # 'focal', 'weighted_ce', 'ce'
+  focal_gamma: 2.0
+  use_class_weights: true
+  scheduler: "cosine"
+  patience: 5
+
+gan:
+  latent_dim: 100
+  channels: 3
+  image_size: 224
+  target_classes: [1, 2, 3, 4]  # Minority classes
+  lr: 2.0e-4
+  beta1: 0.5
+  beta2: 0.999
+  epochs: 50
+  batch_size: 32
+
+xai:
+  methods:
+    - "gradcam"
+    - "gradcam++"
+  target_layers:
+    densenet121: "features.denseblock4.denselayer16.conv2"
+    efficientnet_b0: "features.8"
+  faithfulness:
+    deletion_fractions: [0.05, 0.10, 0.15, 0.20, 0.25, 0.30]
+
+rag:
+  embedding_model: "all-MiniLM-L6-v2"
+  top_k: 3
+  guidelines_path: "src/rag/knowledge_docs/retinal_guidelines.json"
